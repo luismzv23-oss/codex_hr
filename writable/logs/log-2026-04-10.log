@@ -1,0 +1,210 @@
+ERROR - 2026-04-10 14:19:20 --> mysqli_sql_exception: Table 'codex_hr.attendances' doesn't exist in C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('SELECT `attenda...', 0)
+#1 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `attenda...')
+#2 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `attenda...')
+#3 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT `attenda...', Array, false)
+#4 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\app\Controllers\Attendance.php(18): CodeIgniter\BaseModel->findAll()
+#7 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(932): App\Controllers\Attendance->index()
+#8 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Attendance))
+#9 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\...')
+#12 {main}
+CRITICAL - 2026-04-10 14:19:20 --> Table 'codex_hr.attendances' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC', [], false)
+ 5 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Controllers\Attendance.php(18): CodeIgniter\BaseModel->findAll()
+ 8 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Attendance->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Attendance))
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\.gemini\\antigravity\\scratch\\codex_hr\\public\\index.php')
+ERROR - 2026-04-10 14:19:34 --> mysqli_sql_exception: Table 'codex_hr.attendances' doesn't exist in C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('SELECT `attenda...', 0)
+#1 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `attenda...')
+#2 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `attenda...')
+#3 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT `attenda...', Array, false)
+#4 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\app\Controllers\Attendance.php(18): CodeIgniter\BaseModel->findAll()
+#7 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(932): App\Controllers\Attendance->index()
+#8 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Attendance))
+#9 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\...')
+#12 {main}
+CRITICAL - 2026-04-10 14:19:34 --> Table 'codex_hr.attendances' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT `attendance`.*, `users`.`name`
+FROM `attendances`
+JOIN `users` ON `users`.`id` = `attendance`.`user_id`
+ORDER BY `check_in` DESC', [], false)
+ 5 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Controllers\Attendance.php(18): CodeIgniter\BaseModel->findAll()
+ 8 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Attendance->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Attendance))
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\.gemini\\antigravity\\scratch\\codex_hr\\public\\index.php')
+ERROR - 2026-04-10 18:40:28 --> mysqli_sql_exception: Unknown column 'user_id' in 'where clause' in C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('DELETE FROM `ev...', 0)
+#1 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `ev...')
+#2 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `ev...')
+#3 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2791): CodeIgniter\Database\BaseConnection->query('DELETE FROM `ev...', Array, false)
+#4 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\app\Controllers\Users.php(98): CodeIgniter\Database\BaseBuilder->delete()
+#5 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(932): App\Controllers\Users->delete('3', '3')
+#6 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#7 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\...')
+#10 {main}
+CRITICAL - 2026-04-10 18:40:28 --> Unknown column 'user_id' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('DELETE FROM `evaluations`
+WHERE `user_id` = \'3\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `evaluations`
+WHERE `user_id` = \'3\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `evaluations`
+WHERE `user_id` = \'3\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2791): CodeIgniter\Database\BaseConnection->query('DELETE FROM `evaluations`
+WHERE `user_id` = :user_id:', [...], false)
+ 5 APPPATH\Controllers\Users.php(98): CodeIgniter\Database\BaseBuilder->delete()
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Users->delete('3', '3')
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\.gemini\\antigravity\\scratch\\codex_hr\\public\\index.php')
+ERROR - 2026-04-10 18:56:18 --> mysqli_sql_exception: Unknown column 'user_id' in 'where clause' in C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('DELETE FROM `ev...', 0)
+#1 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `ev...')
+#2 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `ev...')
+#3 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2791): CodeIgniter\Database\BaseConnection->query('DELETE FROM `ev...', Array, false)
+#4 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\app\Controllers\Users.php(98): CodeIgniter\Database\BaseBuilder->delete()
+#5 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(932): App\Controllers\Users->delete('2', '2')
+#6 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#7 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\...')
+#10 {main}
+CRITICAL - 2026-04-10 18:56:18 --> Unknown column 'user_id' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('DELETE FROM `evaluations`
+WHERE `user_id` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `evaluations`
+WHERE `user_id` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `evaluations`
+WHERE `user_id` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2791): CodeIgniter\Database\BaseConnection->query('DELETE FROM `evaluations`
+WHERE `user_id` = :user_id:', [...], false)
+ 5 APPPATH\Controllers\Users.php(98): CodeIgniter\Database\BaseBuilder->delete()
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Users->delete('2', '2')
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\.gemini\\antigravity\\scratch\\codex_hr\\public\\index.php')
+ERROR - 2026-04-10 18:56:24 --> mysqli_sql_exception: Unknown column 'user_id' in 'where clause' in C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('DELETE FROM `ev...', 0)
+#1 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `ev...')
+#2 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `ev...')
+#3 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2791): CodeIgniter\Database\BaseConnection->query('DELETE FROM `ev...', Array, false)
+#4 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\app\Controllers\Users.php(98): CodeIgniter\Database\BaseBuilder->delete()
+#5 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(932): App\Controllers\Users->delete('3', '3')
+#6 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#7 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\...')
+#10 {main}
+CRITICAL - 2026-04-10 18:56:24 --> Unknown column 'user_id' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('DELETE FROM `evaluations`
+WHERE `user_id` = \'3\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `evaluations`
+WHERE `user_id` = \'3\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `evaluations`
+WHERE `user_id` = \'3\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2791): CodeIgniter\Database\BaseConnection->query('DELETE FROM `evaluations`
+WHERE `user_id` = :user_id:', [...], false)
+ 5 APPPATH\Controllers\Users.php(98): CodeIgniter\Database\BaseBuilder->delete()
+ 6 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Users->delete('3', '3')
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+ 8 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\.gemini\\antigravity\\scratch\\codex_hr\\public\\index.php')
+ERROR - 2026-04-10 19:33:32 --> mysqli_sql_exception: Table 'codex_hr.evaluations' doesn't exist in C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+Stack trace:
+#0 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('SELECT `evaluat...', 0)
+#1 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `evaluat...')
+#2 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `evaluat...')
+#3 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT `evaluat...', Array, false)
+#4 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\app\Controllers\Evaluations.php(20): CodeIgniter\BaseModel->findAll()
+#7 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(932): App\Controllers\Evaluations->index()
+#8 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Evaluations))
+#9 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 C:\Users\luism\.gemini\antigravity\scratch\codex_hr\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\...')
+#12 {main}
+CRITICAL - 2026-04-10 19:33:32 --> Table 'codex_hr.evaluations' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 295.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(295): mysqli->query('SELECT `evaluations`.*, `users`.`name` as `evaluatee_name`
+FROM `evaluations`
+JOIN `users` ON `users`.`id` = `evaluations`.`evaluatee_id`
+ORDER BY `created_at` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `evaluations`.*, `users`.`name` as `evaluatee_name`
+FROM `evaluations`
+JOIN `users` ON `users`.`id` = `evaluations`.`evaluatee_id`
+ORDER BY `created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `evaluations`.*, `users`.`name` as `evaluatee_name`
+FROM `evaluations`
+JOIN `users` ON `users`.`id` = `evaluations`.`evaluatee_id`
+ORDER BY `created_at` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1616): CodeIgniter\Database\BaseConnection->query('SELECT `evaluations`.*, `users`.`name` as `evaluatee_name`
+FROM `evaluations`
+JOIN `users` ON `users`.`id` = `evaluations`.`evaluatee_id`
+ORDER BY `created_at` DESC', [], false)
+ 5 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Controllers\Evaluations.php(20): CodeIgniter\BaseModel->findAll()
+ 8 SYSTEMPATH\CodeIgniter.php(932): App\Controllers\Evaluations->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Evaluations))
+10 SYSTEMPATH\CodeIgniter.php(366): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\Users\\luism\\.gemini\\antigravity\\scratch\\codex_hr\\public\\index.php')
