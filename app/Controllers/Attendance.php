@@ -36,9 +36,9 @@ class Attendance extends BaseController
         $activeQrPoints = [];
         if (session()->get('role') !== 'admin') {
             $activeQrPoints = (new QrPoint())
-                ->where('user_id', (int) session()->get('user_id'))
-                ->where('is_active', 1)
-                ->orderBy('name', 'ASC')
+                ->where('qr_points.user_id', (int) session()->get('user_id'))
+                ->where('qr_points.is_active', 1)
+                ->orderBy('qr_points.name', 'ASC')
                 ->findAll();
         }
 
@@ -57,9 +57,9 @@ class Attendance extends BaseController
 
         return view('attendance/scan', [
             'activeQrPoints' => (new QrPoint())
-                ->where('user_id', (int) session()->get('user_id'))
-                ->where('is_active', 1)
-                ->orderBy('name', 'ASC')
+                ->where('qr_points.user_id', (int) session()->get('user_id'))
+                ->where('qr_points.is_active', 1)
+                ->orderBy('qr_points.name', 'ASC')
                 ->findAll(),
         ]);
     }
@@ -70,8 +70,8 @@ class Attendance extends BaseController
             ->select('qr_points.*, users.name as user_name, users.email as user_email, users.document_id, departments.name as department_name')
             ->join('users', 'users.id = qr_points.user_id', 'left')
             ->join('departments', 'departments.id = users.department_id', 'left')
-            ->where('token', $token)
-            ->where('is_active', 1)
+            ->where('qr_points.token', $token)
+            ->where('qr_points.is_active', 1)
             ->first();
         if (!$qrPoint) {
             $target = session()->get('isLoggedIn') ? '/attendance' : '/auth/login';
@@ -111,7 +111,10 @@ class Attendance extends BaseController
     public function checkinQr()
     {
         $pointId = (int) $this->request->getPost('qr_point_id');
-        $qrPoint = (new QrPoint())->where('id', $pointId)->where('is_active', 1)->first();
+        $qrPoint = (new QrPoint())
+            ->where('qr_points.id', $pointId)
+            ->where('qr_points.is_active', 1)
+            ->first();
         if (!$qrPoint) {
             return redirect()->to('/attendance')->with('error', 'El punto QR indicado ya no se encuentra disponible.');
         }
