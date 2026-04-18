@@ -70,3 +70,4 @@ $routes->get('/absences', [\App\Controllers\Absences::class, 'index'], ['filter'
 $routes->post('/absences/store', [\App\Controllers\Absences::class, 'store'], ['filter' => 'auth']);
 $routes->post('/absences/update_status/(:num)', [\App\Controllers\Absences::class, 'updateStatus/$1'], ['filter' => 'auth']);
 $routes->get('/absences/attachment/(:num)', [\App\Controllers\Absences::class, 'attachment/$1'], ['filter' => 'auth']);
+$routes->get('/absences/preview/(:num)', [\App\Controllers\Absences::class, 'preview/$1'], ['filter' => 'auth']);

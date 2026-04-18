@@ -75,24 +75,21 @@ class Absences extends BaseController
 
     public function attachment($id)
     {
-        $model = new Absence();
-        $absence = $model->find($id);
-
-        if (!$absence || empty($absence['attachment'])) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        $isAdmin = session()->get('role') === 'admin';
-        if (!$isAdmin && (int) $absence['user_id'] !== (int) session()->get('user_id')) {
-            return redirect()->to('/absences')->with('error', 'No tienes permiso para acceder a este archivo.');
-        }
-
-        $fullPath = WRITEPATH . 'uploads/' . $absence['attachment'];
-        if (!is_file($fullPath)) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
+        [$absence, $fullPath] = $this->resolveAttachment($id);
 
         return $this->response->download($fullPath, null)->setFileName(basename($fullPath));
+    }
+
+    public function preview($id)
+    {
+        [, $fullPath] = $this->resolveAttachment($id);
+
+        $mimeType = mime_content_type($fullPath) ?: 'application/octet-stream';
+
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . basename($fullPath) . '"')
+            ->setBody((string) file_get_contents($fullPath));
     }
 
     public function updateStatus($id)
@@ -113,5 +110,27 @@ class Absences extends BaseController
         ]);
 
         return redirect()->back()->with('success', 'El estado de la licencia ha sido actualizado.');
+    }
+
+    private function resolveAttachment($id): array
+    {
+        $model = new Absence();
+        $absence = $model->find($id);
+
+        if (!$absence || empty($absence['attachment'])) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $isAdmin = session()->get('role') === 'admin';
+        if (!$isAdmin && (int) $absence['user_id'] !== (int) session()->get('user_id')) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $fullPath = WRITEPATH . 'uploads/' . $absence['attachment'];
+        if (!is_file($fullPath)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        return [$absence, $fullPath];
     }
 }

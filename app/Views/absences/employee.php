@@ -75,7 +75,20 @@
                                 </td>
                                 <td>
                                     <?php if ($a['attachment']): ?>
-                                        <a href="<?= base_url('absences/attachment/' . $a['id']) ?>" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-paperclip"></i> Ver</a>
+                                        <div class="d-flex gap-2">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline-primary preview-document"
+                                                data-preview-url="<?= base_url('absences/preview/' . $a['id']) ?>"
+                                                data-download-url="<?= base_url('absences/attachment/' . $a['id']) ?>"
+                                                data-title="Mi documento adjunto"
+                                            >
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <a href="<?= base_url('absences/attachment/' . $a['id']) ?>" class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                        </div>
                                     <?php else: ?>
                                         <span class="text-muted small">No aplica</span>
                                     <?php endif; ?>
@@ -92,4 +105,55 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="documentPreviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="documentPreviewTitle">Vista previa del documento</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body p-0" style="min-height: 75vh;">
+                <iframe id="documentPreviewFrame" src="" class="w-100 h-100 border-0" style="min-height: 75vh;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="documentDownloadLink" class="btn btn-outline-secondary">
+                    <i class="bi bi-download"></i> Descargar
+                </a>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modalElement = document.getElementById('documentPreviewModal');
+    const modal = modalElement ? new bootstrap.Modal(modalElement) : null;
+    const frame = document.getElementById('documentPreviewFrame');
+    const title = document.getElementById('documentPreviewTitle');
+    const downloadLink = document.getElementById('documentDownloadLink');
+
+    document.querySelectorAll('.preview-document').forEach((button) => {
+        button.addEventListener('click', function () {
+            if (!modal || !frame || !title || !downloadLink) {
+                return;
+            }
+
+            frame.src = this.dataset.previewUrl;
+            title.textContent = this.dataset.title || 'Vista previa del documento';
+            downloadLink.href = this.dataset.downloadUrl || '#';
+            modal.show();
+        });
+    });
+
+    modalElement?.addEventListener('hidden.bs.modal', function () {
+        if (frame) {
+            frame.src = '';
+        }
+    });
+});
+</script>
 <?= $this->endSection() ?>

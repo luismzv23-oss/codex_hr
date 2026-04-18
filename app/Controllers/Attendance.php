@@ -36,6 +36,7 @@ class Attendance extends BaseController
         $activeQrPoints = [];
         if (session()->get('role') !== 'admin') {
             $activeQrPoints = (new QrPoint())
+                ->where('user_id', (int) session()->get('user_id'))
                 ->where('is_active', 1)
                 ->orderBy('name', 'ASC')
                 ->findAll();
@@ -55,13 +56,22 @@ class Attendance extends BaseController
         }
 
         return view('attendance/scan', [
-            'activeQrPoints' => (new QrPoint())->where('is_active', 1)->orderBy('name', 'ASC')->findAll(),
+            'activeQrPoints' => (new QrPoint())
+                ->where('user_id', (int) session()->get('user_id'))
+                ->where('is_active', 1)
+                ->orderBy('name', 'ASC')
+                ->findAll(),
         ]);
     }
 
     public function qrEntry(string $token)
     {
-        $qrPoint = (new QrPoint())->where('token', $token)->where('is_active', 1)->first();
+        $qrPoint = (new QrPoint())
+            ->select('qr_points.*, users.name as user_name, users.email as user_email')
+            ->join('users', 'users.id = qr_points.user_id', 'left')
+            ->where('token', $token)
+            ->where('is_active', 1)
+            ->first();
         if (!$qrPoint) {
             $target = session()->get('isLoggedIn') ? '/attendance' : '/auth/login';
             return redirect()->to($target)->with('error', 'El punto QR indicado no existe o está deshabilitado.');
@@ -74,6 +84,10 @@ class Attendance extends BaseController
 
         if (session()->get('role') === 'admin') {
             return redirect()->to('/dashboard')->with('error', 'El check-in QR solo estÃ¡ disponible para empleados.');
+        }
+
+        if (!empty($qrPoint['user_id']) && (int) $qrPoint['user_id'] !== (int) session()->get('user_id')) {
+            return redirect()->to('/attendance')->with('error', 'Este código QR pertenece a otro empleado.');
         }
 
         $attendanceModel = new AttendanceModel();
@@ -99,6 +113,10 @@ class Attendance extends BaseController
         $qrPoint = (new QrPoint())->where('id', $pointId)->where('is_active', 1)->first();
         if (!$qrPoint) {
             return redirect()->to('/attendance')->with('error', 'El punto QR indicado ya no se encuentra disponible.');
+        }
+
+        if (!empty($qrPoint['user_id']) && (int) $qrPoint['user_id'] !== (int) session()->get('user_id')) {
+            return redirect()->to('/attendance')->with('error', 'No puedes registrar ingreso con un código QR asignado a otro empleado.');
         }
 
         return $this->performCheckin('qr', $qrPoint);

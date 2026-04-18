@@ -13,6 +13,9 @@
             <div class="card-body p-4">
                 <div class="mb-4">
                     <h4 class="mb-1"><?= esc($qrPoint['name']) ?></h4>
+                    <?php if (!empty($qrPoint['user_name'])): ?>
+                        <p class="text-muted mb-1">Empleado: <?= esc($qrPoint['user_name']) ?></p>
+                    <?php endif; ?>
                     <p class="text-muted mb-1"><?= esc($qrPoint['location'] ?? 'Sin ubicación registrada') ?></p>
                     <?php if (!empty($qrPoint['description'])): ?>
                         <p class="mb-0"><?= esc($qrPoint['description']) ?></p>
@@ -32,7 +35,7 @@
                     </form>
                 <?php else: ?>
                     <div class="alert alert-info">
-                        Vas a registrar tu ingreso usando el punto QR <strong><?= esc($qrPoint['name']) ?></strong>.
+                        Vas a registrar tu ingreso usando el código QR <strong><?= esc($qrPoint['name']) ?></strong>.
                     </div>
                     <form action="<?= base_url('attendance/checkin-qr') ?>" method="POST">
                         <?= csrf_field() ?>

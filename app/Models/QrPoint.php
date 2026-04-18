@@ -13,7 +13,7 @@ class QrPoint extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name', 'location', 'description', 'token', 'is_active', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['user_id', 'name', 'location', 'description', 'token', 'is_active', 'created_at', 'updated_at'];
 
     protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';

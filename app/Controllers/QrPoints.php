@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\QrPoint;
+use App\Models\User;
 
 class QrPoints extends BaseController
 {
@@ -12,9 +13,28 @@ class QrPoints extends BaseController
             return redirect()->to('/dashboard')->with('error', 'Acceso denegado');
         }
 
-        $points = (new QrPoint())->orderBy('name', 'ASC')->findAll();
+        $search = trim((string) $this->request->getGet('search'));
+        $model = new QrPoint();
+        $query = $model->select('qr_points.*, users.name as user_name, users.email as user_email, users.document_id')
+            ->join('users', 'users.id = qr_points.user_id', 'left');
 
-        return view('qr_points/index', ['points' => $points]);
+        if ($search !== '') {
+            $query->groupStart()
+                ->like('users.name', $search)
+                ->orLike('users.email', $search)
+                ->orLike('users.document_id', $search)
+                ->orLike('qr_points.name', $search)
+            ->groupEnd();
+        }
+
+        $points = $query->orderBy('users.name', 'ASC')->orderBy('qr_points.name', 'ASC')->findAll();
+        $employees = (new User())->where('role !=', 'admin')->where('is_active', 1)->orderBy('name', 'ASC')->findAll();
+
+        return view('qr_points/index', [
+            'points' => $points,
+            'employees' => $employees,
+            'search' => $search,
+        ]);
     }
 
     public function store()
@@ -33,7 +53,7 @@ class QrPoints extends BaseController
 
         (new QrPoint())->insert($payload);
 
-        return redirect()->back()->with('success', 'Punto QR creado correctamente.');
+        return redirect()->back()->with('success', 'Código QR del empleado creado correctamente.');
     }
 
     public function update(int $id)
@@ -45,10 +65,10 @@ class QrPoints extends BaseController
         $model = new QrPoint();
         $point = $model->find($id);
         if (!$point) {
-            return redirect()->back()->with('error', 'El punto QR indicado no existe.');
+            return redirect()->back()->with('error', 'El código QR indicado no existe.');
         }
 
-        $payload = $this->buildPayload();
+        $payload = $this->buildPayload($id);
         if ($payload === null) {
             return redirect()->back()->withInput();
         }
@@ -56,7 +76,7 @@ class QrPoints extends BaseController
         $payload['updated_at'] = date('Y-m-d H:i:s');
         $model->update($id, $payload);
 
-        return redirect()->back()->with('success', 'Punto QR actualizado correctamente.');
+        return redirect()->back()->with('success', 'Código QR actualizado correctamente.');
     }
 
     public function toggle(int $id)
@@ -68,7 +88,7 @@ class QrPoints extends BaseController
         $model = new QrPoint();
         $point = $model->find($id);
         if (!$point) {
-            return redirect()->back()->with('error', 'El punto QR indicado no existe.');
+            return redirect()->back()->with('error', 'El código QR indicado no existe.');
         }
 
         $model->update($id, [
@@ -76,7 +96,7 @@ class QrPoints extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->back()->with('success', (int) $point['is_active'] === 1 ? 'Punto QR deshabilitado.' : 'Punto QR habilitado nuevamente.');
+        return redirect()->back()->with('success', (int) $point['is_active'] === 1 ? 'Código QR deshabilitado.' : 'Código QR habilitado nuevamente.');
     }
 
     public function regenerate(int $id)
@@ -88,7 +108,7 @@ class QrPoints extends BaseController
         $model = new QrPoint();
         $point = $model->find($id);
         if (!$point) {
-            return redirect()->back()->with('error', 'El punto QR indicado no existe.');
+            return redirect()->back()->with('error', 'El código QR indicado no existe.');
         }
 
         $model->update($id, [
@@ -96,22 +116,34 @@ class QrPoints extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->back()->with('success', 'QR regenerado correctamente. El cÃ³digo anterior deja de funcionar.');
+        return redirect()->back()->with('success', 'QR regenerado correctamente. El código anterior deja de funcionar.');
     }
 
-    private function buildPayload(): ?array
+    private function buildPayload(?int $currentId = null): ?array
     {
-        $name = trim((string) $this->request->getPost('name'));
+        $userId = (int) $this->request->getPost('user_id');
         $location = trim((string) $this->request->getPost('location'));
         $description = trim((string) $this->request->getPost('description'));
 
-        if ($name === '') {
-            session()->setFlashdata('error', 'Debes indicar el nombre del punto QR.');
+        $user = (new User())->where('role !=', 'admin')->where('is_active', 1)->find($userId);
+        if (!$user) {
+            session()->setFlashdata('error', 'Debes seleccionar un empleado válido.');
+            return null;
+        }
+
+        $existingQuery = (new QrPoint())->where('user_id', $userId);
+        if ($currentId !== null) {
+            $existingQuery->where('id !=', $currentId);
+        }
+
+        if ($existingQuery->countAllResults() > 0) {
+            session()->setFlashdata('error', 'El empleado seleccionado ya tiene un código QR asignado.');
             return null;
         }
 
         return [
-            'name' => $name,
+            'user_id' => $userId,
+            'name' => 'QR de ' . $user['name'],
             'location' => $location !== '' ? $location : null,
             'description' => $description !== '' ? $description : null,
         ];
