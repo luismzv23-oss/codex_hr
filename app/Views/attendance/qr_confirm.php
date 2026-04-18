@@ -16,6 +16,8 @@
                     <?php if (!empty($qrPoint['user_name'])): ?>
                         <p class="text-muted mb-1">Empleado: <?= esc($qrPoint['user_name']) ?></p>
                     <?php endif; ?>
+                    <p class="text-muted mb-1">Departamento: <?= esc($qrPoint['department_name'] ?? 'Sin departamento') ?></p>
+                    <p class="text-muted mb-1">Documento: <?= esc($qrPoint['document_id'] ?? 'Sin documento') ?></p>
                     <p class="text-muted mb-1"><?= esc($qrPoint['location'] ?? 'Sin ubicación registrada') ?></p>
                     <?php if (!empty($qrPoint['description'])): ?>
                         <p class="mb-0"><?= esc($qrPoint['description']) ?></p>

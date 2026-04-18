@@ -67,8 +67,9 @@ class Attendance extends BaseController
     public function qrEntry(string $token)
     {
         $qrPoint = (new QrPoint())
-            ->select('qr_points.*, users.name as user_name, users.email as user_email')
+            ->select('qr_points.*, users.name as user_name, users.email as user_email, users.document_id, departments.name as department_name')
             ->join('users', 'users.id = qr_points.user_id', 'left')
+            ->join('departments', 'departments.id = users.department_id', 'left')
             ->where('token', $token)
             ->where('is_active', 1)
             ->first();

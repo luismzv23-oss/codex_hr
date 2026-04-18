@@ -39,6 +39,7 @@ $routes->post('/qr-points/store', [\App\Controllers\QrPoints::class, 'store'], [
 $routes->post('/qr-points/update/(:num)', 'QrPoints::update/$1', ['filter' => 'auth']);
 $routes->post('/qr-points/toggle/(:num)', 'QrPoints::toggle/$1', ['filter' => 'auth']);
 $routes->post('/qr-points/regenerate/(:num)', 'QrPoints::regenerate/$1', ['filter' => 'auth']);
+$routes->post('/qr-points/delete/(:num)', 'QrPoints::delete/$1', ['filter' => 'auth']);
 
 $routes->get('/shifts', [\App\Controllers\Shifts::class, 'index'], ['filter' => 'auth']);
 $routes->get('/shifts/admin', [\App\Controllers\Shifts::class, 'admin'], ['filter' => 'auth']);

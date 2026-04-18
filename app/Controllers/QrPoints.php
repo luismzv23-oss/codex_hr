@@ -15,14 +15,16 @@ class QrPoints extends BaseController
 
         $search = trim((string) $this->request->getGet('search'));
         $model = new QrPoint();
-        $query = $model->select('qr_points.*, users.name as user_name, users.email as user_email, users.document_id')
+        $query = $model->select('qr_points.*, users.name as user_name, users.email as user_email, users.document_id, departments.name as department_name')
             ->join('users', 'users.id = qr_points.user_id', 'left');
+        $query->join('departments', 'departments.id = users.department_id', 'left');
 
         if ($search !== '') {
             $query->groupStart()
                 ->like('users.name', $search)
                 ->orLike('users.email', $search)
                 ->orLike('users.document_id', $search)
+                ->orLike('departments.name', $search)
                 ->orLike('qr_points.name', $search)
             ->groupEnd();
         }
@@ -117,6 +119,23 @@ class QrPoints extends BaseController
         ]);
 
         return redirect()->back()->with('success', 'QR regenerado correctamente. El código anterior deja de funcionar.');
+    }
+
+    public function delete(int $id)
+    {
+        if (session()->get('role') !== 'admin') {
+            return redirect()->to('/dashboard')->with('error', 'Acceso denegado');
+        }
+
+        $model = new QrPoint();
+        $point = $model->find($id);
+        if (!$point) {
+            return redirect()->back()->with('error', 'El código QR indicado no existe.');
+        }
+
+        $model->delete($id);
+
+        return redirect()->back()->with('success', 'Código QR eliminado correctamente.');
     }
 
     private function buildPayload(?int $currentId = null): ?array

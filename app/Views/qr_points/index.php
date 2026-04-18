@@ -41,7 +41,7 @@
         <form method="GET" action="<?= base_url('qr-points') ?>" class="row g-3 align-items-end">
             <div class="col-md-8">
                 <label class="form-label">Buscar</label>
-                <input type="text" name="search" class="form-control" value="<?= esc($search) ?>" placeholder="Nombre, correo, documento o etiqueta QR">
+                <input type="text" name="search" class="form-control" value="<?= esc($search) ?>" placeholder="Nombre, correo, documento, departamento o etiqueta QR">
             </div>
             <div class="col-md-4 d-flex gap-2">
                 <button type="submit" class="btn btn-primary">
@@ -64,8 +64,9 @@
                         <strong><?= esc($point['user_name'] ?? $point['name']) ?></strong>
                         <small class="d-block text-muted"><?= esc($point['user_email'] ?? 'Sin correo') ?></small>
                         <?php if (!empty($point['document_id'])): ?>
-                            <small class="d-block text-muted">Doc: <?= esc($point['document_id']) ?></small>
+                            <small class="d-block text-muted">Documento: <?= esc($point['document_id']) ?></small>
                         <?php endif; ?>
+                        <small class="d-block text-muted">Departamento: <?= esc($point['department_name'] ?? 'Sin departamento') ?></small>
                     </div>
                     <span class="badge bg-<?= (int) $point['is_active'] === 1 ? 'success' : 'secondary' ?>">
                         <?= (int) $point['is_active'] === 1 ? 'Activo' : 'Deshabilitado' ?>
@@ -74,6 +75,11 @@
                 <div class="card-body">
                     <div class="text-center mb-3">
                         <div class="qr-code border rounded bg-white p-3 d-inline-block" data-url="<?= esc(base_url('attendance/qr/' . $point['token']), 'attr') ?>"></div>
+                    </div>
+                    <div class="small text-center text-muted mb-3">
+                        <div class="fw-semibold text-dark"><?= esc($point['user_name'] ?? $point['name']) ?></div>
+                        <div><?= esc($point['department_name'] ?? 'Sin departamento') ?></div>
+                        <div><?= esc($point['document_id'] ?? 'Sin documento') ?></div>
                     </div>
                     <p class="small text-muted mb-1"><strong>Etiqueta:</strong> <?= esc($point['name']) ?></p>
                     <p class="small text-muted mb-3">
@@ -120,6 +126,12 @@
                             <?= csrf_field() ?>
                             <button type="submit" class="btn btn-outline-dark btn-sm w-100">
                                 <i class="bi bi-arrow-repeat"></i> Regenerar token
+                            </button>
+                        </form>
+                        <form action="<?= base_url('qr-points/delete/' . $point['id']) ?>" method="POST" onsubmit="return confirm('¿Deseas eliminar este código QR?');">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                                <i class="bi bi-trash"></i> Eliminar QR
                             </button>
                         </form>
                     </div>
