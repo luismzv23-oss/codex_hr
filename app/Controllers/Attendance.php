@@ -52,7 +52,7 @@ class Attendance extends BaseController
     public function scan()
     {
         if (session()->get('role') === 'admin') {
-            return redirect()->to('/attendance')->with('error', 'El escaneo QR estÃ¡ disponible para personal operativo.');
+            return redirect()->to('/attendance')->with('error', 'El escaneo QR está disponible para personal operativo.');
         }
 
         return view('attendance/scan', [
@@ -72,19 +72,25 @@ class Attendance extends BaseController
             ->join('departments', 'departments.id = users.department_id', 'left')
             ->where('qr_points.token', $token)
             ->where('qr_points.is_active', 1)
+            ->where('users.is_active', 1)
             ->first();
+
         if (!$qrPoint) {
             $target = session()->get('isLoggedIn') ? '/attendance' : '/auth/login';
-            return redirect()->to($target)->with('error', 'El punto QR indicado no existe o está deshabilitado.');
+            return redirect()->to($target)->with('error', 'El código QR indicado no existe o está deshabilitado.');
         }
 
         if (!session()->get('isLoggedIn')) {
-            session()->set('intended_url', '/attendance/qr/' . $token);
-            return redirect()->to('/auth/login')->with('error', 'Inicia sesiÃ³n para registrar tu ingreso con QR.');
+            $result = $this->processCheckin((int) $qrPoint['user_id'], 'qr', $qrPoint);
+
+            return view('attendance/qr_result', [
+                'qrPoint' => $qrPoint,
+                'result' => $result,
+            ]);
         }
 
         if (session()->get('role') === 'admin') {
-            return redirect()->to('/dashboard')->with('error', 'El check-in QR solo estÃ¡ disponible para empleados.');
+            return redirect()->to('/dashboard')->with('error', 'El check-in QR solo está disponible para empleados.');
         }
 
         if (!empty($qrPoint['user_id']) && (int) $qrPoint['user_id'] !== (int) session()->get('user_id')) {
@@ -115,8 +121,9 @@ class Attendance extends BaseController
             ->where('qr_points.id', $pointId)
             ->where('qr_points.is_active', 1)
             ->first();
+
         if (!$qrPoint) {
-            return redirect()->to('/attendance')->with('error', 'El punto QR indicado ya no se encuentra disponible.');
+            return redirect()->to('/attendance')->with('error', 'El código QR indicado ya no se encuentra disponible.');
         }
 
         if (!empty($qrPoint['user_id']) && (int) $qrPoint['user_id'] !== (int) session()->get('user_id')) {
@@ -132,26 +139,39 @@ class Attendance extends BaseController
         $activeShift = $model->where('user_id', session()->get('user_id'))->where('check_out', null)->first();
 
         if (!$activeShift) {
-            return redirect()->back()->with('error', 'No tienes ningÃºn turno en curso.');
+            return redirect()->back()->with('error', 'No tienes ningún turno en curso.');
         }
 
         $model->update($activeShift['id'], ['check_out' => date('Y-m-d H:i:s')]);
+
         return redirect()->back()->with('success', 'Fichaje de salida cerrado.');
     }
 
     private function performCheckin(string $method = 'manual', ?array $qrPoint = null)
     {
+        $result = $this->processCheckin((int) session()->get('user_id'), $method, $qrPoint);
+
+        return redirect()->to('/attendance')->with($result['success'] ? 'success' : 'error', $result['message']);
+    }
+
+    private function processCheckin(int $userId, string $method = 'manual', ?array $qrPoint = null): array
+    {
         $model = new AttendanceModel();
-        $userId = (int) session()->get('user_id');
         $activeShift = $model->where('user_id', $userId)->where('check_out', null)->first();
 
         if ($activeShift) {
-            return redirect()->back()->with('error', 'Ya tienes un turno en curso, marca salida primero.');
+            return [
+                'success' => false,
+                'message' => 'Ya existe una jornada abierta para este empleado.',
+            ];
         }
 
         $now = date('Y-m-d H:i:s');
         if ($this->userHasApprovedAbsenceInRange($userId, $now, $now)) {
-            return redirect()->back()->with('error', 'No puedes registrar check-in mientras tienes una licencia aprobada vigente.');
+            return [
+                'success' => false,
+                'message' => 'No es posible registrar el ingreso porque el empleado tiene una licencia aprobada vigente.',
+            ];
         }
 
         $shift = $this->findTodayShift($userId, $now);
@@ -164,10 +184,10 @@ class Attendance extends BaseController
             if ($lateMinutes > self::LATE_GRACE_MINUTES) {
                 $lateStatus = $lateMinutes <= self::LATE_ALERT_MINUTES ? 'late' : 'late_critical';
                 $this->createAnnouncement(
-                    'Llegada tardÃ­a detectada',
+                    'Llegada tardía detectada',
                     sprintf(
-                        '%s registrÃ³ ingreso a las %s para un turno de las %s (%d minutos tarde).',
-                        session()->get('name'),
+                        '%s registró ingreso a las %s para un turno de las %s (%d minutos tarde).',
+                        $qrPoint['user_name'] ?? session()->get('name') ?? 'Empleado',
                         date('d/m/Y H:i', strtotime($now)),
                         date('d/m/Y H:i', strtotime($shift['start_time'])),
                         $lateMinutes
@@ -191,11 +211,13 @@ class Attendance extends BaseController
             'late_status' => $lateStatus,
         ]);
 
-        $message = $method === 'qr'
-            ? sprintf('Check-in QR registrado correctamente en %s.', $qrPoint['name'] ?? 'el punto seleccionado')
-            : 'Fichaje de entrada registrado correctamente.';
-
-        return redirect()->to('/attendance')->with('success', $message);
+        return [
+            'success' => true,
+            'message' => $method === 'qr'
+                ? sprintf('Check-in QR registrado correctamente para %s.', $qrPoint['user_name'] ?? 'el empleado')
+                : 'Fichaje de entrada registrado correctamente.',
+            'check_in' => $now,
+        ];
     }
 
     private function findTodayShift(int $userId, string $now): ?array

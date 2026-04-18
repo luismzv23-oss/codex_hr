@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.194694">
-    <testsuite name="App" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.194694">
-      <testsuite name="ExampleSessionTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\session\ExampleSessionTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.139291">
-        <testcase name="testSessionSimple" class="ExampleSessionTest" classname="ExampleSessionTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\session\ExampleSessionTest.php" line="11" assertions="1" time="0.139291"/>
+  <testsuite name="" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.191183">
+    <testsuite name="App" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.191183">
+      <testsuite name="ExampleSessionTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\session\ExampleSessionTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.096539">
+        <testcase name="testSessionSimple" class="ExampleSessionTest" classname="ExampleSessionTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\session\ExampleSessionTest.php" line="11" assertions="1" time="0.096539"/>
       </testsuite>
-      <testsuite name="HealthTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\unit\HealthTest.php" tests="2" assertions="3" errors="0" warnings="0" failures="0" skipped="0" time="0.055402">
-        <testcase name="testIsDefinedAppPath" class="HealthTest" classname="HealthTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\unit\HealthTest.php" line="13" assertions="1" time="0.004699"/>
-        <testcase name="testBaseUrlHasBeenSet" class="HealthTest" classname="HealthTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\unit\HealthTest.php" line="18" assertions="2" time="0.050704"/>
+      <testsuite name="HealthTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\unit\HealthTest.php" tests="2" assertions="3" errors="0" warnings="0" failures="0" skipped="0" time="0.094644">
+        <testcase name="testIsDefinedAppPath" class="HealthTest" classname="HealthTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\unit\HealthTest.php" line="13" assertions="1" time="0.002622"/>
+        <testcase name="testBaseUrlHasBeenSet" class="HealthTest" classname="HealthTest" file="C:\Users\luism\.gemini\antigravity\scratch\codex_hr\tests\unit\HealthTest.php" line="18" assertions="2" time="0.092022"/>
       </testsuite>
     </testsuite>
   </testsuite>

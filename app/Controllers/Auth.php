@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\QrPoint;
 use App\Models\User;
 
 class Auth extends BaseController
@@ -42,7 +43,30 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Credenciales incorrectas');
         }
 
-        return view('auth/login');
+        $documentId = trim((string) $this->request->getGet('document_id'));
+        $publicQr = null;
+        $publicQrError = null;
+
+        if ($documentId !== '') {
+            $publicQr = (new QrPoint())
+                ->select('qr_points.*, users.name as user_name, users.email as user_email, users.document_id, departments.name as department_name')
+                ->join('users', 'users.id = qr_points.user_id')
+                ->join('departments', 'departments.id = users.department_id', 'left')
+                ->where('users.document_id', $documentId)
+                ->where('users.is_active', 1)
+                ->where('qr_points.is_active', 1)
+                ->first();
+
+            if (!$publicQr) {
+                $publicQrError = 'No se encontró un QR activo para el documento indicado.';
+            }
+        }
+
+        return view('auth/login', [
+            'documentId' => $documentId,
+            'publicQr' => $publicQr,
+            'publicQrError' => $publicQrError,
+        ]);
     }
 
     public function logout()
