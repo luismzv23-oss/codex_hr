@@ -6,6 +6,7 @@ use App\Models\Absence;
 
 class Absences extends BaseController
 {
+    private const ALLOWED_ABSENCE_TYPES = ['Vacaciones', 'Licencia Médica', 'Licencia por Paternidad/Maternidad', 'Asuntos Personales'];
     private const ALLOWED_ATTACHMENT_EXTENSIONS = ['pdf', 'jpg', 'jpeg', 'png'];
     private const ALLOWED_ATTACHMENT_MIME_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
     private const MAX_ATTACHMENT_SIZE_KB = 5120;
@@ -34,6 +35,18 @@ class Absences extends BaseController
         $model = new Absence();
         $file = $this->request->getFile('attachment');
         $filePath = null;
+        $type = (string) $this->request->getPost('type');
+        $startDate = (string) $this->request->getPost('start_date');
+        $endDate = (string) $this->request->getPost('end_date');
+        $reason = trim((string) $this->request->getPost('reason'));
+
+        if (!in_array($type, self::ALLOWED_ABSENCE_TYPES, true)) {
+            return redirect()->back()->withInput()->with('error', 'El tipo de licencia indicado no es valido.');
+        }
+
+        if (empty($startDate) || empty($endDate) || !strtotime($startDate) || !strtotime($endDate) || $endDate < $startDate) {
+            return redirect()->back()->withInput()->with('error', 'El rango de fechas de la licencia no es valido.');
+        }
 
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $extension = strtolower((string) $file->guessExtension());
@@ -61,11 +74,11 @@ class Absences extends BaseController
 
         $model->insert([
             'user_id' => session()->get('user_id'),
-            'type' => $this->request->getPost('type'),
-            'start_date' => $this->request->getPost('start_date'),
-            'end_date' => $this->request->getPost('end_date'),
+            'type' => $type,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
             'status' => 'Pendiente',
-            'reason' => $this->request->getPost('reason'),
+            'reason' => $reason !== '' ? $reason : null,
             'attachment' => $filePath,
             'created_at' => date('Y-m-d H:i:s'),
         ]);

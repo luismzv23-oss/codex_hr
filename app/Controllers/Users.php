@@ -7,6 +7,9 @@ use App\Models\User;
 
 class Users extends BaseController
 {
+    private const ALLOWED_ROLES = ['admin', 'supervisor', 'employee'];
+    private const ALLOWED_EMPLOYEE_TYPES = ['Permanente', 'Temporal'];
+
     public function index()
     {
         if (session()->get('role') != 'admin') {
@@ -38,6 +41,25 @@ class Users extends BaseController
         $email = trim((string) $this->request->getPost('email'));
         $password = (string) $this->request->getPost('password');
         $hireDate = $this->request->getPost('hire_date');
+        $role = (string) $this->request->getPost('role');
+        $employeeType = $this->normalizeEmployeeType($this->request->getPost('employee_type'));
+        $salaryBase = $this->normalizeSalary($this->request->getPost('salary_base'));
+
+        if ($documentId === '') {
+            return redirect()->back()->withInput()->with('error', 'El documento es obligatorio.');
+        }
+
+        if (!in_array($role, self::ALLOWED_ROLES, true)) {
+            return redirect()->back()->withInput()->with('error', 'El rol seleccionado no es valido.');
+        }
+
+        if ($employeeType === false) {
+            return redirect()->back()->withInput()->with('error', 'El tipo de empleado seleccionado no es valido.');
+        }
+
+        if ($salaryBase === false) {
+            return redirect()->back()->withInput()->with('error', 'El salario base debe ser un numero mayor o igual a cero.');
+        }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return redirect()->back()->withInput()->with('error', 'El correo electrónico no es válido.');
@@ -64,10 +86,10 @@ class Users extends BaseController
             'document_id' => $documentId,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            'role' => $this->request->getPost('role'),
+            'role' => $role,
             'department_id' => $this->request->getPost('department_id') ?: null,
-            'employee_type' => $this->request->getPost('employee_type') ?: null,
-            'salary_base' => $this->request->getPost('salary_base') ?: null,
+            'employee_type' => $employeeType,
+            'salary_base' => $salaryBase,
             'hire_date' => $hireDate ?: null,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -102,6 +124,31 @@ class Users extends BaseController
 
         $userModel = new User();
         $documentId = trim((string) $this->request->getPost('document_id'));
+        $role = (string) $this->request->getPost('role');
+        $hireDate = $this->request->getPost('hire_date');
+        $employeeType = $this->normalizeEmployeeType($this->request->getPost('employee_type'));
+        $salaryBase = $this->normalizeSalary($this->request->getPost('salary_base'));
+
+        if ($documentId === '') {
+            return redirect()->back()->withInput()->with('error', 'El documento es obligatorio.');
+        }
+
+        if (!in_array($role, self::ALLOWED_ROLES, true)) {
+            return redirect()->back()->withInput()->with('error', 'El rol seleccionado no es valido.');
+        }
+
+        if ($employeeType === false) {
+            return redirect()->back()->withInput()->with('error', 'El tipo de empleado seleccionado no es valido.');
+        }
+
+        if ($salaryBase === false) {
+            return redirect()->back()->withInput()->with('error', 'El salario base debe ser un numero mayor o igual a cero.');
+        }
+
+        if (!empty($hireDate) && !strtotime((string) $hireDate)) {
+            return redirect()->back()->withInput()->with('error', 'La fecha de incorporacion no es valida.');
+        }
+
         $existingDocument = $userModel->where('document_id', $documentId)->where('id !=', $id)->first();
         if ($existingDocument) {
             return redirect()->back()->with('error', 'Ya existe otro empleado con ese documento.');
@@ -110,11 +157,11 @@ class Users extends BaseController
         $data = [
             'name' => $this->request->getPost('name'),
             'document_id' => $documentId,
-            'role' => $this->request->getPost('role'),
+            'role' => $role,
             'department_id' => $this->request->getPost('department_id') ?: null,
-            'employee_type' => $this->request->getPost('employee_type') ?: null,
-            'salary_base' => $this->request->getPost('salary_base') ?: null,
-            'hire_date' => $this->request->getPost('hire_date') ?: null,
+            'employee_type' => $employeeType,
+            'salary_base' => $salaryBase,
+            'hire_date' => $hireDate ?: null,
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
@@ -160,5 +207,28 @@ class Users extends BaseController
         }
 
         return redirect()->back()->with('success', 'Cuenta de empleado y registros eliminados permanentemente.');
+    }
+
+    private function normalizeEmployeeType($employeeType)
+    {
+        $employeeType = trim((string) $employeeType);
+        if ($employeeType === '') {
+            return null;
+        }
+
+        return in_array($employeeType, self::ALLOWED_EMPLOYEE_TYPES, true) ? $employeeType : false;
+    }
+
+    private function normalizeSalary($salary)
+    {
+        if ($salary === null || $salary === '') {
+            return null;
+        }
+
+        if (!is_numeric($salary) || (float) $salary < 0) {
+            return false;
+        }
+
+        return number_format((float) $salary, 2, '.', '');
     }
 }

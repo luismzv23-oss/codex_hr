@@ -111,8 +111,8 @@
                     <span class="navbar-brand mb-0 h1"><?= $this->renderSection('title') ?? 'Dashboard' ?></span>
                     <?php if (session()->get('isLoggedIn')): ?>
                         <div class="ms-auto small text-muted text-end">
-                            <div><i class="bi bi-person-circle"></i> <?= session()->get('name') ?></div>
-                            <div><?= ucfirst(session()->get('role')) ?></div>
+                            <div><i class="bi bi-person-circle"></i> <?= esc(session()->get('name')) ?></div>
+                            <div><?= esc(ucfirst((string) session()->get('role'))) ?></div>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -122,14 +122,14 @@
                 <div class="mx-auto page-container">
                     <?php if (session()->getFlashdata('success')): ?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <?= session()->getFlashdata('success') ?>
+                            <?= esc(session()->getFlashdata('success')) ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('error')): ?>
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <?= session()->getFlashdata('error') ?>
+                            <?= esc(session()->getFlashdata('error')) ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php endif; ?>
